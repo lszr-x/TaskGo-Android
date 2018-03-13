@@ -2,6 +2,8 @@ package cn.abtion.taskgo.network.retrofit;
 
 
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +25,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * @author FanHongyu.
  * @since 18/1/18 15:48.
@@ -35,13 +39,6 @@ public final class RetrofitFactory {
     private static OkHttpClient sOkHttpClient;
     private static Retrofit sRetrofit;
     private static RetrofitService sRetrofitService;
-
-
-
-
-
-
-
 
 
     /**
@@ -119,13 +116,18 @@ public final class RetrofitFactory {
 
                 //获取本地缓存的token
                 String token = TaskGoApplication.getInstance().getCacheUtil().getString(CacheKey.TOKEN);
+                Log.i(TAG, "intercept: "+token);
+
+                /**
+                 * 防止空指针
+                 */
                 if (token == null) {
                     token = "token";
                 }
                 // TODO: 18/1/18 token安全性问题
                 //请求时加入token
                 Request request = chain.request().newBuilder()
-                        .header("Token", token)
+                        .header("token", token)
                         .build();
                 return chain.proceed(request);
             }

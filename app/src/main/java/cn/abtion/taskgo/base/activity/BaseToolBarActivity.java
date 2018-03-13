@@ -1,16 +1,22 @@
 package cn.abtion.taskgo.base.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.abtion.taskgo.R;
 
 /**
@@ -23,6 +29,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
 
 
     private Toolbar mToolBar;
+    Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         setContentView(getToolbarView());
         initActivity();
     }
+
+
 
 
     /**
@@ -101,9 +110,22 @@ public abstract class BaseToolBarActivity extends BaseActivity {
      */
     protected void setActivityTitle(CharSequence charSequence) {
         if (mToolBar != null) {
-            mToolBar.setTitle(charSequence);
-            //兼容高低版本的getColor方法
-            mToolBar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+
+            TextView view = mToolBar.findViewById(R.id.txt_toolbar_title);
+            view.setText(charSequence);
+
+        }
+    }
+
+
+    /**
+     * 自定义右上角图标
+     * @param resId
+     */
+    protected void setToolBarMenu(int resId) {
+        if(mToolBar != null) {
+            ImageView imageView = mToolBar.findViewById(R.id.img_toolbar_menu);
+            imageView.setImageResource(resId);
         }
     }
 

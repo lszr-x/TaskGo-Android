@@ -1,12 +1,14 @@
 package cn.abtion.taskgo.network;
 
+import android.util.Log;
+
 import cn.abtion.taskgo.network.response.ApiException;
 import cn.abtion.taskgo.network.response.ApiResponse;
 import cn.abtion.taskgo.utils.ToastUtil;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import retrofit2.Call;
-import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * @author fhyPayaso
@@ -16,7 +18,7 @@ import retrofit2.Response;
 public abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
 
 
-    public abstract void onDataSuccess(ApiResponse response);
+    public abstract void onDataSuccess(ApiResponse<T> response);
 
 
     @Override
@@ -27,9 +29,9 @@ public abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     @Override
     public void onNext(ApiResponse tApiResponse) {
 
-        if (tApiResponse.getCode() > 400) {
+        if (tApiResponse.getCode() != 1000&&tApiResponse.getCode() != 6000) {
 
-            // TODO: 2018/1/21 错误信息统一处理
+            GlobalAPIErrorHandler.handler(tApiResponse.getCode());
         } else {
 
             onDataSuccess(tApiResponse);
@@ -40,9 +42,9 @@ public abstract class BaseObserver<T> implements Observer<ApiResponse<T>> {
     public void onError(Throwable e) {
 
         if (e instanceof ApiException) {
-
-            // TODO: 2018/1/21 错误信息统一处理
+            GlobalAPIErrorHandler.handler((ApiException) e);
         } else {
+            Log.i(TAG, "onError: "+e.toString());
             ToastUtil.showToast("网络连接失败，请稍后再试");
         }
     }

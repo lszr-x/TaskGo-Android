@@ -2,14 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    >
+    android:orientation="vertical">
 
+    <cn.abtion.taskgo.widget.BannerPager
+        android:id="@+id/flipper_header"
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+    </cn.abtion.taskgo.widget.BannerPager>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HomeFragment" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
+        <TextView
+            android:id="@+id/txt_diy_task"
+            style="@style/txt_home_task_type"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/bg_txt_diy_task"
+            android:text="@string/txt_home_diy_task" />
 
+        <TextView
+            android:id="@+id/txt_water_task"
+            style="@style/txt_home_task_type"
+            android:layout_toRightOf="@id/txt_diy_task"
+            android:background="@drawable/bg_txt_water_task"
+            android:text="@string/txt_home_water_task" />
+
+        <TextView
+            android:id="@+id/txt_lost_task"
+            style="@style/txt_home_task_type"
+            android:layout_below="@id/txt_diy_task"
+            android:background="@drawable/bg_txt_lost_task"
+            android:text="@string/txt_home_lost_and_found_task" />
+
+        <TextView
+            android:id="@+id/txt_more_task"
+            style="@style/txt_home_task_type"
+            android:layout_alignLeft="@id/txt_water_task"
+            android:layout_alignTop="@id/txt_lost_task"
+            android:background="@drawable/bg_txt_more_task"
+            android:text="@string/txt_home_more_task" />
+
+    </RelativeLayout>
 </LinearLayout>

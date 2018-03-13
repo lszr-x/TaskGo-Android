@@ -3,6 +3,7 @@ package cn.abtion.taskgo.mvp.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -10,10 +11,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.abtion.taskgo.R;
 import cn.abtion.taskgo.base.activity.BaseNoBarActivity;
-import cn.abtion.taskgo.mvp.view.home.fragment.HomeFragment;
+import cn.abtion.taskgo.mvp.view.task.fragment.HomeFragment;
 import cn.abtion.taskgo.mvp.view.message.fragment.MessageFragment;
 import cn.abtion.taskgo.mvp.view.mine.fragment.MineFragment;
 import cn.abtion.taskgo.utils.FragmentUtil;
+import cn.abtion.taskgo.utils.ToastUtil;
 
 
 public class MainActivity extends BaseNoBarActivity {
@@ -25,11 +27,18 @@ public class MainActivity extends BaseNoBarActivity {
     TextView mTxtTabMessage;
     @BindView(R.id.txt_tab_mine)
     TextView mTxtTabMine;
+    @BindView(R.id.img_tab_home)
+    ImageView mImgTabHome;
+    @BindView(R.id.img_tab_message)
+    ImageView mImgTabMessage;
+    @BindView(R.id.img_tab_mine)
+    ImageView mImgTabMine;
 
 
     private HomeFragment mHomeFragment;
     private MessageFragment mMessageFragment;
     private MineFragment mMineFragment;
+    private long startTime=0;
 
 
     @Override
@@ -66,9 +75,9 @@ public class MainActivity extends BaseNoBarActivity {
         hideAllFragment();
         if (mHomeFragment == null) {
             mHomeFragment = new HomeFragment();
-            FragmentUtil.addFragment(this,R.id.frame_content,mHomeFragment,null);
+            FragmentUtil.addFragment(this, R.id.frame_content, mHomeFragment, null);
         } else {
-            FragmentUtil.showFragment(this,mHomeFragment);
+            FragmentUtil.showFragment(this, mHomeFragment);
         }
     }
 
@@ -79,9 +88,9 @@ public class MainActivity extends BaseNoBarActivity {
         hideAllFragment();
         if (mMessageFragment == null) {
             mMessageFragment = new MessageFragment();
-            FragmentUtil.addFragment(this,R.id.frame_content,mMessageFragment,null);
+            FragmentUtil.addFragment(this, R.id.frame_content, mMessageFragment, null);
         } else {
-            FragmentUtil.showFragment(this,mMessageFragment);
+            FragmentUtil.showFragment(this, mMessageFragment);
         }
     }
 
@@ -92,9 +101,9 @@ public class MainActivity extends BaseNoBarActivity {
         hideAllFragment();
         if (mMineFragment == null) {
             mMineFragment = new MineFragment();
-            FragmentUtil.addFragment(this,R.id.frame_content,mMineFragment,null);
+            FragmentUtil.addFragment(this, R.id.frame_content, mMineFragment, null);
         } else {
-            FragmentUtil.showFragment(this,mMineFragment);
+            FragmentUtil.showFragment(this, mMineFragment);
         }
 
     }
@@ -105,14 +114,14 @@ public class MainActivity extends BaseNoBarActivity {
      */
     private void hideAllFragment() {
 
-        if(mHomeFragment != null) {
-            FragmentUtil.hideFragment(this,mHomeFragment);
+        if (mHomeFragment != null) {
+            FragmentUtil.hideFragment(this, mHomeFragment);
         }
         if (mMessageFragment != null) {
-            FragmentUtil.hideFragment(this,mMessageFragment);
+            FragmentUtil.hideFragment(this, mMessageFragment);
         }
-        if(mMineFragment != null) {
-            FragmentUtil.hideFragment(this,mMineFragment);
+        if (mMineFragment != null) {
+            FragmentUtil.hideFragment(this, mMineFragment);
         }
     }
 
@@ -123,6 +132,7 @@ public class MainActivity extends BaseNoBarActivity {
     private void changeHomeMenuState() {
         clearChoiceStatus();
         mTxtTabHome.setSelected(true);
+        mImgTabHome.setSelected(true);
     }
 
     /**
@@ -131,6 +141,7 @@ public class MainActivity extends BaseNoBarActivity {
     private void changeMessageMenuState() {
         clearChoiceStatus();
         mTxtTabMessage.setSelected(true);
+        mImgTabMessage.setSelected(true);
     }
 
     /**
@@ -139,6 +150,7 @@ public class MainActivity extends BaseNoBarActivity {
     private void changeMineMenuState() {
         clearChoiceStatus();
         mTxtTabMine.setSelected(true);
+        mImgTabMine.setSelected(true);
     }
 
 
@@ -150,6 +162,29 @@ public class MainActivity extends BaseNoBarActivity {
         mTxtTabHome.setSelected(false);
         mTxtTabMessage.setSelected(false);
         mTxtTabMine.setSelected(false);
+
+        mImgTabHome.setSelected(false);
+        mImgTabMessage.setSelected(false);
+        mImgTabMine.setSelected(false);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        long currentTime=System.currentTimeMillis();
+        if((currentTime-startTime)>2000) {
+            ToastUtil.showToast("再按一次退出TaskGo");
+            startTime=currentTime;
+        } else {
+            finish();
+        }
+    }
 }

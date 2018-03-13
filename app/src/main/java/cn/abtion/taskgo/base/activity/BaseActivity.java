@@ -1,12 +1,20 @@
 package cn.abtion.taskgo.base.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.view.View;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import cn.abtion.taskgo.utils.Utility;
 
 /**
  * @author FanHongyu.
@@ -17,6 +25,26 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
+    /**
+     * 进度窗
+     * @param savedInstanceState
+     */
+    protected ProgressDialog progressDialog;
+
+    /**
+     * 取消ProgressDialog
+     */
+    protected void disMissProgressDialog(){
+        if(!isDestroyed()&&progressDialog.isShowing()){
+            Utility.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +52,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
 
     /**
      * 初始化活动操作
